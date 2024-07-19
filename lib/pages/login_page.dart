@@ -9,6 +9,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // We create this Global for setting Up the Validation on From Fields
+  final GlobalKey<FormState> _loginFormKey = GlobalKey();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  // Creating GetIt Instance
+  // GetIt _getIt = GetIt.instance; 
+  // Create Auth Service Class Instance
+  @override
+  void initState() {
+    // _authService = _getIt.get<AuthService>();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,16 +78,21 @@ class _LoginPageState extends State<LoginPage> {
           vertical: MediaQuery.sizeOf(context).height * 0.05),
       // Under the Form Widget we will use the Custom Text Form Fields
       child: Form(
+        key: _loginFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CustomTextForm(
-              hintText: "Enter Email",
+              controller: _emailController,
+              obscureText: false,
+              hintText: "Email",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
             CustomTextForm(
-              hintText: "Enter Password",
+              controller: _passwordController,
+              obscureText: true,
+              hintText: "Password",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
             _loginButton()
@@ -90,7 +108,10 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: ()async {
+          if (_loginFormKey.currentState!.validate()) {
+          }
+        },
         // Getting the Default Primary Color for Button
         color: Theme.of(context).colorScheme.primary,
         child: const Text(
@@ -109,8 +130,12 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-           Text("Don't have an account? ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14)),
-          Text("SignUp Now",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),)
+          Text("Don't have an account? ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(
+            "SignUp Now",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          )
         ],
       ),
     );
