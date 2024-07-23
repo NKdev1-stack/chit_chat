@@ -1,37 +1,27 @@
-import 'package:chit_chat/pages/signupPage.dart';
+
+import 'package:chit_chat/pages/login_page.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SingUp extends StatefulWidget {
+  const SingUp({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SingUp> createState() => _SingUpState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  // We create this Global for setting Up the Validation on From Fields
+class _SingUpState extends State<SingUp> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
-  // Creating GetIt Instance
-  // GetIt _getIt = GetIt.instance; 
-  // Create Auth Service Class Instance
-  @override
-  void initState() {
-    super.initState();
-  }
+  TextEditingController _confirmpasswordController = TextEditingController();
+  TextEditingController _bioController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Fixing the Pixel Error Issue
-      resizeToAvoidBottomInset: false,
-      body: _buildUI(),
-    );
+    return Scaffold(body: _buildUI());
   }
-
-// Complete UI Will be created in _buildUI method
+  // / Complete UI Will be created in _buildUI method
   Widget _buildUI() {
     return SafeArea(
         child: Padding(
@@ -55,11 +45,11 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hi Welcome Back!",
+            "Hi Welcome!",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
           ),
           Text(
-            "Hello Again, you've been missed",
+            "Register Your Account",
             style: TextStyle(
                 fontSize: 15, fontWeight: FontWeight.w500, color: Colors.grey),
           ),
@@ -73,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginForm() {
     return Container(
       // * 0.40 means it will take 40% of screen height
-      height: MediaQuery.sizeOf(context).height * 0.40,
+      height: MediaQuery.sizeOf(context).height * 0.60,
       margin: EdgeInsets.symmetric(
           vertical: MediaQuery.sizeOf(context).height * 0.05),
       // Under the Form Widget we will use the Custom Text Form Fields
@@ -93,6 +83,18 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               obscureText: true,
               hintText: "Password",
+              height: MediaQuery.sizeOf(context).height * 0.1,
+            ),
+             CustomTextForm(
+              controller: _confirmpasswordController,
+              obscureText: true,
+              hintText: "Confirm Password",
+              height: MediaQuery.sizeOf(context).height * 0.1,
+            ),
+             CustomTextForm(
+              controller: _bioController,
+              obscureText: false,
+              hintText: "Bio",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
             _loginButton()
@@ -115,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
         // Getting the Default Primary Color for Button
         color: Theme.of(context).colorScheme.primary,
         child: const Text(
-          "Login",
+          "Singup ",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -130,14 +132,14 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-         const Text("Don't have an account? ",
+        const  Text("Already have an account? ",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           InkWell(
             onTap: (){
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const SingUp(),));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
             },
-            child:const  Text(
-              "SignUp Now",
+            child:const Text(
+              "Login Now",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           )
