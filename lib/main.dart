@@ -1,3 +1,4 @@
+import 'package:chit_chat/pages/complete_profile.dart';
 import 'package:chit_chat/pages/login_page.dart';
 import 'package:chit_chat/pages/signupPage.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const SingUp()
+      home: const CompleteProfile()
     );
   }
 }

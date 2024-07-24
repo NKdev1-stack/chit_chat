@@ -16,7 +16,7 @@ class _SingUpState extends State<SingUp> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmpasswordController = TextEditingController();
-  TextEditingController _bioController = TextEditingController();
+  TextEditingController _fullnameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: _buildUI());
@@ -92,9 +92,9 @@ class _SingUpState extends State<SingUp> {
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
              CustomTextForm(
-              controller: _bioController,
+              controller: _fullnameController,
               obscureText: false,
-              hintText: "Bio",
+              hintText: "FullName",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
             _loginButton()
