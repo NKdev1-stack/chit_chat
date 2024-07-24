@@ -33,24 +33,19 @@ class _CompleteProfileState extends State<CompleteProfile> {
               Container(
                 height: MediaQuery.sizeOf(context).height * 0.25,
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fitWidth,
                         image: NetworkImage(
                             "https://t3.ftcdn.net/jpg/05/28/86/66/360_F_528866602_aiVwnOnkooTrqo3MgicCf83SVVzt1Gnd.jpg"))),
               ),
-              CircleAvatar(
+            const  CircleAvatar(
                 radius: 60,
                 backgroundImage: NetworkImage(
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXOdZN9FwqzYqEL6SJa7uQNAFQAmepwBR3bg&s"),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Icon(
-                  Icons.add_a_photo_sharp,
-                  color: Colors.white,
-                ),
-              ),
+              IconButton(onPressed: (){}, icon: const Icon( Icons.add_a_photo_sharp,
+                color: Colors.white,)),
             ],
           ),
           _formFields(),
