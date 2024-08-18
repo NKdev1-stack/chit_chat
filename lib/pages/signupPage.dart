@@ -1,6 +1,9 @@
-
+import 'package:chit_chat/models/userModel.dart';
 import 'package:chit_chat/pages/login_page.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,6 +24,7 @@ class _SingUpState extends State<SingUp> {
   Widget build(BuildContext context) {
     return Scaffold(body: _buildUI());
   }
+
   // / Complete UI Will be created in _buildUI method
   Widget _buildUI() {
     return SafeArea(
@@ -85,39 +89,41 @@ class _SingUpState extends State<SingUp> {
               hintText: "Password",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
-             CustomTextForm(
+            CustomTextForm(
               controller: _confirmpasswordController,
               obscureText: true,
               hintText: "Confirm Password",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
-             CustomTextForm(
+            CustomTextForm(
               controller: _fullnameController,
               obscureText: false,
               hintText: "FullName",
               height: MediaQuery.sizeOf(context).height * 0.1,
             ),
-            _loginButton()
+            _signupButton()
           ],
         ),
       ),
     );
   }
 
-// For Login Button
+// For Signup Button
 
-  Widget _loginButton() {
+  Widget _signupButton() {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
       child: MaterialButton(
-        onPressed: ()async {
+        onPressed: () async {
           if (_loginFormKey.currentState!.validate()) {
+            signUp(_emailController.text.toString().trim(),
+                _passwordController.text.toString().trim());
           }
         },
         // Getting the Default Primary Color for Button
         color: Theme.of(context).colorScheme.primary,
         child: const Text(
-          "Singup ",
+          "Signup ",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -127,18 +133,19 @@ class _SingUpState extends State<SingUp> {
   // For SignUp Text (Create Account Link widget)
 
   Widget _createAccountLink_Signup() {
-    return  Expanded(
+    return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-        const  Text("Already have an account? ",
+          const Text("Already have an account? ",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           InkWell(
-            onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             },
-            child:const Text(
+            child: const Text(
               "Login Now",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
@@ -146,5 +153,52 @@ class _SingUpState extends State<SingUp> {
         ],
       ),
     );
+  }
+  // Functions for Value checking and Signup
+
+  // not required because we already use form to check is values are entered or not...
+
+  // void checkValues(){
+
+  //   // .trim will remove the extra spaces
+  //   String email = _emailController.text.toString().trim();
+  //   String Password = _passwordController.text.toString().trim();
+  //   String CPassword = _confirmpasswordController.text.toString().trim();
+  //   String FullName = _fullnameController .text.toString().trim();
+
+  // }
+
+  void signUp(String Email, String Password) async {
+              // Whenever we send data into firebase for authentication it return the UserCredential which contain all data about user.
+
+    UserCredential? Credential; // ? it mean it may b null in or not in future
+    try {
+
+       Credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: Email, password: Password);
+    }on FirebaseAuthException catch (ex) {
+      print(ex.message.toString());
+    }
+  // Check is Credential is not empty save data into Database (Firestore or Realtime)
+    if(Credential != null){
+      // Getting the UID of Current User from Credential variable
+      String uid =Credential.user!.uid.toString();
+        // calling userModel to send data to FirebaseFirestore.... 
+        UserModel userModel= UserModel(uid: uid, fullName:_fullnameController.text.toString().trim(), email: Credential.user!.email.toString().trim(), profilePic: "");
+      // UserModel is not a map but there is a function serializaiton fromMap, .tomap will help us they will change this data to Map and then we will send this to database
+    //.set will take Map or data in map form so we directly pass the Map in it
+      await FirebaseFirestore.instance.collection("Users").doc(uid).set(
+        // .toMap is the function in the UserModel which will change all data of userModel to map and then we are sending it to FirebaseFirestore Database.
+
+        userModel.toMap()
+      )
+
+      // .then mean when account is created
+    .then((value){
+        print("Account Created");
+    }); 
+
+
+    }
   }
 }

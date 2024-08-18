@@ -1,6 +1,7 @@
+import 'package:chit_chat/firebase_options.dart';
 import 'package:chit_chat/pages/complete_profile.dart';
 import 'package:chit_chat/pages/login_page.dart';
-import 'package:chit_chat/pages/signupPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,10 +11,12 @@ void main() async{
 }
 
 Future<void> setupFirebase()async{
-  WidgetsFlutterBinding.ensureInitialized();
-  // calling that method from auth/firebaseSetup file
-  await setupFirebase();
-}
+    WidgetsFlutterBinding.ensureInitialized();
+
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform);
+    }
+  
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

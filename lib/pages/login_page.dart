@@ -1,5 +1,9 @@
+import 'package:chit_chat/models/userModel.dart';
 import 'package:chit_chat/pages/signupPage.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,12 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
 
   // Creating GetIt Instance
-  // GetIt _getIt = GetIt.instance; 
+  // GetIt _getIt = GetIt.instance;
   // Create Auth Service Class Instance
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +113,8 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
       child: MaterialButton(
-        onPressed: ()async {
-          if (_loginFormKey.currentState!.validate()) {
-          }
+        onPressed: () async {
+          if (_loginFormKey.currentState!.validate()) {LoginUser(_emailController.text.toString().trim(),_passwordController.text.toString().trim());}
         },
         // Getting the Default Primary Color for Button
         color: Theme.of(context).colorScheme.primary,
@@ -125,18 +129,22 @@ class _LoginPageState extends State<LoginPage> {
   // For SignUp Text (Create Account Link widget)
 
   Widget _createAccountLink_Signup() {
-    return  Expanded(
+    return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-         const Text("Don't have an account? ",
+          const Text("Don't have an account? ",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           InkWell(
-            onTap: (){
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const SingUp(),));
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SingUp(),
+                  ));
             },
-            child:const  Text(
+            child: const Text(
               "SignUp Now",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
@@ -144,5 +152,31 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  LoginUser(String email, String password) async{
+    UserCredential? credential;
+    credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) async{
+          print("user Login" );
+
+        // When the User is Login then using Credential we took the UID 
+          var UID = credential!.user!.uid;
+
+        // Then we create DocumentSnapshot because we will fetch the Data for this specific user from FireStore database.
+          // userDataSnapshot -> This will get complete data using UID and save it
+
+          DocumentSnapshot userDataSnapShot = await   FirebaseFirestore.instance.collection('Users').doc(UID).get();
+          // Then we will call our userModel and inside that we call the function .fromMap which mean that this will function
+          // will data in map format and save it in Map form and we know data is in string and dynamic so we just set the map type.
+              //userDatasnapshot will return object and  then we will convert it to map
+          UserModel userModel = UserModel.fromMap(userDataSnapShot.data() as Map<String,dynamic>);
+        })
+        .onError(
+          (error, stackTrace) {
+            print(error);
+          },
+        );
   }
 }

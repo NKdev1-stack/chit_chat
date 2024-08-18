@@ -47,29 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAuY0fuKAEdYfWlFkjwRnf0ip5S2JI9U24',
-    appId: '1:837241818672:web:f2ed2774dad5ade6ece7f5',
-    messagingSenderId: '837241818672',
-    projectId: 'chit-chat-90732',
-    authDomain: 'chit-chat-90732.firebaseapp.com',
-    storageBucket: 'chit-chat-90732.appspot.com',
-    measurementId: 'G-2XY56YZWC2',
+    apiKey: 'AIzaSyAK4PrxcTd1JRYNXonBpU3TQNnq9nmvnXQ',
+    appId: '1:742098681258:web:48616593e1a42c32b8bfd3',
+    messagingSenderId: '742098681258',
+    projectId: 'chitchatting-75f2b',
+    authDomain: 'chitchatting-75f2b.firebaseapp.com',
+    storageBucket: 'chitchatting-75f2b.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDh668iuwYCnvsPV-bgukqeM-XOnG1PKGk',
-    appId: '1:837241818672:android:bda9b3c7798af1e9ece7f5',
-    messagingSenderId: '837241818672',
-    projectId: 'chit-chat-90732',
-    storageBucket: 'chit-chat-90732.appspot.com',
+    apiKey: 'AIzaSyDagXGlatzkOqFjpuNhqm-lNQWUu6kbORQ',
+    appId: '1:742098681258:android:5262aba1d4d1cac6b8bfd3',
+    messagingSenderId: '742098681258',
+    projectId: 'chitchatting-75f2b',
+    storageBucket: 'chitchatting-75f2b.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBEJfPpIP2_A4ZqsbQMnALOcROTEWiHPIk',
-    appId: '1:837241818672:ios:ab9331cf5454046dece7f5',
-    messagingSenderId: '837241818672',
-    projectId: 'chit-chat-90732',
-    storageBucket: 'chit-chat-90732.appspot.com',
+    apiKey: 'AIzaSyB3FTzkOZ2CY43MBUsSVODHT8SFrVQomGI',
+    appId: '1:742098681258:ios:754589ff1b91bff3b8bfd3',
+    messagingSenderId: '742098681258',
+    projectId: 'chitchatting-75f2b',
+    storageBucket: 'chitchatting-75f2b.appspot.com',
     iosBundleId: 'com.example.chitChat',
   );
+
 }

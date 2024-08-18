@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "837241818672",
-    "project_id": "chit-chat-90732",
-    "storage_bucket": "chit-chat-90732.appspot.com"
+    "project_number": "742098681258",
+    "project_id": "chitchatting-75f2b",
+    "storage_bucket": "chitchatting-75f2b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:837241818672:android:bda9b3c7798af1e9ece7f5",
+        "mobilesdk_app_id": "1:742098681258:android:5262aba1d4d1cac6b8bfd3",
         "android_client_info": {
           "package_name": "com.example.chit_chat"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDh668iuwYCnvsPV-bgukqeM-XOnG1PKGk"
+          "current_key": "AIzaSyDagXGlatzkOqFjpuNhqm-lNQWUu6kbORQ"
         }
       ],
       "services": {
