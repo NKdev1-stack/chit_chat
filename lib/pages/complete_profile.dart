@@ -17,7 +17,8 @@ class CompleteProfile extends StatefulWidget {
 class _CompleteProfileState extends State<CompleteProfile> {
   TextEditingController _userNamecontroller = TextEditingController();
   TextEditingController _biocController = TextEditingController();
-  late File imageFile; // This variable will be used for Image store
+
+  Uint8List imageFile = Uint8List(11000); // This variable will be used for Image store
   
 
     final GlobalKey<FormState> _loginFormKey = GlobalKey();
@@ -46,10 +47,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         image: NetworkImage(
                             "https://t3.ftcdn.net/jpg/05/28/86/66/360_F_528866602_aiVwnOnkooTrqo3MgicCf83SVVzt1Gnd.jpg"))),
               ),
-            const  CircleAvatar(
+              CircleAvatar(
                 radius: 60,
-                backgroundImage: NetworkImage(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXOdZN9FwqzYqEL6SJa7uQNAFQAmepwBR3bg&s"),
+                backgroundImage:MemoryImage(imageFile)
               ),
               IconButton(onPressed: (){
                 showPhotoOptions();
@@ -124,6 +124,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               onTap: (){
                 // Calling Select image method and passing source as a Gallery
                 selectImage(ImageSource.gallery);
+                Navigator.pop(context);
               },
               title: const Text("Select from Gallery"),
               leading:const  Icon(Icons.image_sharp),
@@ -133,7 +134,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
        // Calling Select image method and passing source as a Camera
 
               onTap: (){
-                selectImage(ImageSource.camera)
+                selectImage(ImageSource.camera);
+                Navigator.pop(context);
               },
               title: const Text("Capture from Camera"),
               leading: const Icon(Icons.camera_alt_rounded),
@@ -146,15 +148,27 @@ class _CompleteProfileState extends State<CompleteProfile> {
   }
 
   void selectImage(ImageSource source)async{
-    // We will use this method for Selecting image
-    // We call Image Picker for Picking image and then we pass the Image Source 
+   
 
-    await ImagePicker().pickImage(source: source);
+    Uint8List profileImg =await pickImage(source);
+    setState(() {
+      imageFile = profileImg;
+    });
+
 
 
   }
 
-  void cropImage()async{
-    // We will use this method for Cropping image
-  }  
+   pickImage(ImageSource Imagesource)async{
+
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? file = await _imagePicker.pickImage(source: Imagesource);
+    if(file!=null){
+      return await file.readAsBytes();
+    }else{
+      print("No Image Selected");
+    }
+
+  }
+  
 }
