@@ -5,11 +5,14 @@ class UserModel {
   String? fullName;
   String? email;
   String? profilePic;
+  String? username;
+  
   UserModel({
     required this.uid,
     required this.fullName,
     required this.email,
     required this.profilePic,
+    required this.username,
   });
 
   UserModel.fromMap(Map<String,dynamic> map){
@@ -17,6 +20,7 @@ class UserModel {
     fullName:['fullName'];
     email:['email'];
     profilePic:['profilePic'];
+    username:[];
 
   }
 
@@ -27,6 +31,7 @@ class UserModel {
       'fullName':fullName,
       'email':email,
       'profilePic':profilePic,
+      'usrname':username,
       
 
     };

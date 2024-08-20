@@ -1,4 +1,5 @@
 import 'package:chit_chat/models/userModel.dart';
+import 'package:chit_chat/pages/complete_profile.dart';
 import 'package:chit_chat/pages/login_page.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +23,7 @@ class _SingUpState extends State<SingUp> {
   TextEditingController _fullnameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildUI());
+    return Scaffold(body: _buildUI(),extendBody: true,resizeToAvoidBottomInset: true,);
   }
 
   // / Complete UI Will be created in _buildUI method
@@ -169,36 +170,51 @@ class _SingUpState extends State<SingUp> {
   // }
 
   void signUp(String Email, String Password) async {
-              // Whenever we send data into firebase for authentication it return the UserCredential which contain all data about user.
+    // Whenever we send data into firebase for authentication it return the UserCredential which contain all data about user.
 
     UserCredential? Credential; // ? it mean it may b null in or not in future
     try {
-
-       Credential = await FirebaseAuth.instance
+      Credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: Email, password: Password);
-    }on FirebaseAuthException catch (ex) {
+    } on FirebaseAuthException catch (ex) {
       print(ex.message.toString());
     }
-  // Check is Credential is not empty save data into Database (Firestore or Realtime)
-    if(Credential != null){
+    // Check is Credential is not empty save data into Database (Firestore or Realtime)
+    if (Credential != null) {
       // Getting the UID of Current User from Credential variable
-      String uid =Credential.user!.uid.toString();
-        // calling userModel to send data to FirebaseFirestore.... 
-        UserModel userModel= UserModel(uid: uid, fullName:_fullnameController.text.toString().trim(), email: Credential.user!.email.toString().trim(), profilePic: "");
+      String uid = Credential.user!.uid.toString();
+      // calling userModel to send data to FirebaseFirestore....
+      UserModel userModel = UserModel(
+          uid: uid,
+          fullName: _fullnameController.text.toString().trim(),
+          email: Credential.user!.email.toString().trim(),
+          profilePic: "",
+          username: "",
+          
+          );
       // UserModel is not a map but there is a function serializaiton fromMap, .tomap will help us they will change this data to Map and then we will send this to database
-    //.set will take Map or data in map form so we directly pass the Map in it
-      await FirebaseFirestore.instance.collection("Users").doc(uid).set(
-        // .toMap is the function in the UserModel which will change all data of userModel to map and then we are sending it to FirebaseFirestore Database.
+      //.set will take Map or data in map form so we directly pass the Map in it
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(uid)
+          .set(
+              // .toMap is the function in the UserModel which will change all data of userModel to map and then we are sending it to FirebaseFirestore Database.
 
-        userModel.toMap()
-      )
+              userModel.toMap())
 
-      // .then mean when account is created
-    .then((value){
+          // .then mean when account is created
+          .then((value) {
+            _emailController.clear();
+            _passwordController.clear();
+            _confirmpasswordController.clear();
+            _fullnameController.clear();
+            // below pass the UserModel Instance
+          
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CompleteProfile(userModel: userModel,),));
+
         print("Account Created");
-    }); 
-
-
+        
+      });
     }
   }
 }

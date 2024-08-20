@@ -1,14 +1,22 @@
 import 'dart:io';
 
+import 'package:chit_chat/models/userModel.dart';
+import 'package:chit_chat/pages/Home.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class CompleteProfile extends StatefulWidget {
+  UserModel? userModel;
 
-  const CompleteProfile({super.key});
+
+   CompleteProfile({super.key, required this.userModel});
 
   @override
   State<CompleteProfile> createState() => _CompleteProfileState();
@@ -97,6 +105,20 @@ class _CompleteProfileState extends State<CompleteProfile> {
       child: MaterialButton(
         onPressed: ()async {
           if (_loginFormKey.currentState!.validate()) {
+            var downloadURL = await uploadImageToFirebaseStorage(imageFile);
+ // Set the username , and profile pic in usermodel and then send this data to Firestore using UserModel other data will remain same in model just usrname, bio and profile pic will get updated
+
+
+widget.userModel!.username = _userNamecontroller.text.toString().trim();
+widget.userModel!.profilePic = downloadURL.toString();
+            FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString())
+            .set(widget.userModel!.toMap()).then((value) {
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const Home(),));
+            },); // this will again update the data automatically with some new or old data
+
+
+
+
           }
         },
         // Getting the Default Primary Color for Button
@@ -170,5 +192,30 @@ class _CompleteProfileState extends State<CompleteProfile> {
     }
 
   }
+
+  // Store image Into Firebase Storage...
+
+   Future<String> uploadImageToFirebaseStorage(Uint8List img)async{
+
+    FirebaseStorage _storage = FirebaseStorage.instance; // getting firebase storage instance
+  Reference reference = _storage.ref("ProfileImages").child(FirebaseAuth.instance.currentUser!.uid.toString()); // Setup reference 
+
+  UploadTask uploadTask =  reference.putData(img); // Add Image into the Reference of FirebaseAuth 
+
+  // Getting download URL
+
+  TaskSnapshot snapshot = await uploadTask; // we are waiting for uploadtask one it will finish it will return snapshot in TaskSnapshot
+
+  String downloadURL = await snapshot.ref.getDownloadURL(); // getting download URL.
+   
+
+  return downloadURL; // return download URL for firestore Database...
+
+
+
+
+
+  }
+
   
 }
