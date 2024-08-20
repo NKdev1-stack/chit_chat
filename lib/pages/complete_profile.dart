@@ -4,6 +4,7 @@ import 'package:chit_chat/widgets/text_form_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CompleteProfile extends StatefulWidget {
 
@@ -114,19 +115,28 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
     showDialog(context: context, builder: (context){
       //.. We will return any widget there but now we will return Alert dialog..
-      return  AlertDialog(
+      return   AlertDialog(
         title: const Text("Upload Profile Picture"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
+              onTap: (){
+                // Calling Select image method and passing source as a Gallery
+                selectImage(ImageSource.gallery);
+              },
               title: const Text("Select from Gallery"),
-              leading: IconButton(onPressed: (){}, icon: const Icon(Icons.image_sharp)),
+              leading:const  Icon(Icons.image_sharp),
             ),
            const Divider(color: Colors.grey,),
             ListTile(
+       // Calling Select image method and passing source as a Camera
+
+              onTap: (){
+                selectImage(ImageSource.camera)
+              },
               title: const Text("Capture from Camera"),
-              leading: IconButton(onPressed: (){}, icon: const Icon(Icons.camera_alt_rounded)),
+              leading: const Icon(Icons.camera_alt_rounded),
             ) 
           ],
         ),
@@ -135,8 +145,13 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
   }
 
-  void selectImage()async{
+  void selectImage(ImageSource source)async{
     // We will use this method for Selecting image
+    // We call Image Picker for Picking image and then we pass the Image Source 
+
+    await ImagePicker().pickImage(source: source);
+
+
   }
 
   void cropImage()async{
