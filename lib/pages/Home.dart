@@ -64,7 +64,7 @@ class Home extends StatelessWidget {
     //   );
     // }
     return   ListTile(
-        title: Text(data['email']),
+        title: Text(data['usrname']),
         onTap: () {
           // On click passed the user's UID to chat page for chatting or for other purposes.
           Navigator.pushReplacement(
@@ -73,7 +73,7 @@ class Home extends StatelessWidget {
                 builder: (context) =>  ChatPage(receiverUserEmail:data['email'] ,receiverUserID: data['uid'],),
                
               ));
-               print(data['email']);
+               print(data['usrname']);
         },
       );
   }
