@@ -1,5 +1,7 @@
 import 'package:chit_chat/models/userModel.dart';
+import 'package:chit_chat/pages/Home.dart';
 import 'package:chit_chat/pages/signupPage.dart';
+import 'package:chit_chat/services/user_check.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -159,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
     credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) async{
-          print("user Login" );
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const usrChecking() ,));
 
         // When the User is Login then using Credential we took the UID 
           var UID = credential!.user!.uid;

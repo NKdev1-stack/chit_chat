@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chit_chat/models/userModel.dart';
 import 'package:chit_chat/pages/Home.dart';
+import 'package:chit_chat/services/user_check.dart';
 import 'package:chit_chat/widgets/text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,7 +114,7 @@ widget.userModel!.username = _userNamecontroller.text.toString().trim();
 widget.userModel!.profilePic = downloadURL.toString();
             FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid.toString())
             .set(widget.userModel!.toMap()).then((value) {
-              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const Home(),));
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const usrChecking(),));
             },); // this will again update the data automatically with some new or old data
 
 
