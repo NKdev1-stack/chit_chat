@@ -207,7 +207,7 @@ widget.userModel!.profilePic = downloadURL.toString();
 
   TaskSnapshot snapshot = await uploadTask; // we are waiting for uploadtask one it will finish it will return snapshot in TaskSnapshot
 
-  String downloadURL = await snapshot.ref.getDownloadURL(); // getting download URL.
+  String downloadURL = await snapshot.ref.getDownloadURL().toString(); // getting download URL.
    
 
   return downloadURL; // return download URL for firestore Database...

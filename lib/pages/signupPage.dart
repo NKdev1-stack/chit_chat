@@ -190,6 +190,8 @@ class _SingUpState extends State<SingUp> {
           email: Credential.user!.email.toString().trim(),
           profilePic: "",
           username: "",
+          LastMessage: "Hey! I am Using Chit Chat"
+
           
           );
       // UserModel is not a map but there is a function serializaiton fromMap, .tomap will help us they will change this data to Map and then we will send this to database

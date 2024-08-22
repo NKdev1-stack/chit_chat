@@ -1,5 +1,5 @@
 import 'package:chit_chat/models/userModel.dart';
-import 'package:chit_chat/pages/Users.dart';
+import 'package:chit_chat/pages/Home.dart';
 import 'package:chit_chat/pages/chat_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,32 +7,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Home extends StatelessWidget {
+class Users extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Home({
+  Users({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       appBar: AppBar(
-        actions: [
+        actions:const [
            Padding(
-            padding:  const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: (){
-                
-                _auth.signOut();
-              },
-              child:const Icon(Icons.logout,color: Colors.white,)),
+            padding:  EdgeInsets.all(8.0),
+            child: Icon(Icons.search, color: Colors.white,),
           ),
         ],
-        title:const  Center(child:  Text("ChitChat",style: TextStyle(color: Colors.white),)),
+        title:const  Center(child:  Text("Peoples",style: TextStyle(color: Colors.white),)),
         elevation: 0,
         backgroundColor: Colors.grey.shade800,
-        leading: IconButton(onPressed: (){}, icon:const Icon(Icons.menu_rounded,color: Colors.white,)),
+        leading: IconButton(onPressed: (){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+        }, icon:const Icon(Icons.arrow_back,color: Colors.white,)),
       ),
       backgroundColor: Colors.white12,
       body: _buildUserList());
@@ -72,7 +68,6 @@ class Home extends StatelessWidget {
     // We check if the current Login user email is not equal to those emails which are in data map then show others users email in list tile
 
     if (_auth.currentUser!.email != data['email'].toString()) {
-      String UsrName = data['usrname'];
       return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Card(
@@ -80,19 +75,9 @@ class Home extends StatelessWidget {
         child: ListTile(
           shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 tileColor: Colors.grey.shade800,
-                
             title: Text(data['usrname'].toString(),style: const TextStyle(color: Colors.white),),
           
-            leading: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: Center(
-                      child: Text(
-                    UsrName[0].toUpperCase(),
-                    style:const  TextStyle(color: Colors.black, fontSize: 25),
-                  ))),
+            leading: data['profilePic']!=null?CircleAvatar(backgroundImage: NetworkImage(data['profilePic'].toString()),):Icon(Icons.account_circle_rounded),
             subtitle: data['Last Message'] !=null? Text(data['Last Message'].toString(),style: const TextStyle(color: Colors.white),) : const Text(""),
            trailing: data['LastMessageTime']!=null?Text(data['LastMessageTime'].toString(),style: const TextStyle(color: Colors.white),):
            const Text(""),
@@ -116,7 +101,4 @@ class Home extends StatelessWidget {
     }
     return Container();
   }
-
-
- 
 }

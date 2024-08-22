@@ -4,6 +4,7 @@ class UserModel {
   String? email;
   String? profilePic;
   String? username;
+  String? LastMessage;
 
   UserModel({
     required this.uid,
@@ -11,6 +12,7 @@ class UserModel {
     required this.email,
     required this.profilePic,
     required this.username,
+    required this.LastMessage,
   });
 /*
 
@@ -30,6 +32,7 @@ These methods are essential for working with user data in Flutter applications, 
     ['profilePic'];
     username:
     [];
+    LastMessage:[];
   }
 // The toMap method is used to convert a UserModel object into a Map.
 
@@ -40,6 +43,7 @@ These methods are essential for working with user data in Flutter applications, 
       'email': email,
       'profilePic': profilePic,
       'usrname': username,
+      'LastMessage':LastMessage,
     };
   }
 }

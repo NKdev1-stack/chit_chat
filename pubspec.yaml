@@ -42,6 +42,11 @@ dependencies:
   google_fonts: ^6.2.1
   delightful_toast: ^1.1.0
   image_picker: ^1.1.2
+  emoji_picker_flutter: ^2.2.0
+  intl: ^0.18.0
+
+
+ 
 
 dev_dependencies:
   flutter_test:
